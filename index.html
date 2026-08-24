@@ -1,4 +1,3 @@
-HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,31 +5,151 @@ HTML
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>O-Level Physics Practice Hub</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
-        h1 { color: #333; }
-        .topic-list { list-style: none; padding: 0; }
-        .topic-list li { margin: 10px 0; }
-        .topic-list a { 
-            display: block; 
-            padding: 12px 20px; 
-            background: #f4f4f4; 
-            border: 1px solid #ddd; 
-            text-decoration: none; 
-            color: #0066cc; 
-            border-radius: 5px;
-            font-weight: bold;
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f6;
         }
-        .topic-list a:hover { background: #e2e2e2; }
+        header {
+            text-align: center;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .unit-section {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .unit-title {
+            color: #2980b9;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 8px;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        .topic-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0 0;
+        }
+        .topic-list li {
+            margin: 10px 0;
+        }
+        .topic-list a {
+            display: block;
+            padding: 10px 15px;
+            background: #fdfdfd;
+            border: 1px solid #e1e8ed;
+            text-decoration: none;
+            color: #34495e;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+        }
+        .topic-list a:hover {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+            transform: translateX(5px);
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
-    <h1>O-Level Physics Assessments</h1>
-    <p>Select a topic below to begin your practice assessment at your own time:</p>
-    
-    <ul class="topic-list">
-        <li><a href="topic1.html">Topic 1: Physical Quantities, Units and Measurements</a></li>
-        <li><a href="topic2.html">Topic 2: Kinematics</a></li>
-        <!-- Add links for your other 20+ topics here as you build them -->
-    </ul>
+
+    <header>
+        <h1>O-Level Physics Online Assessment Hub</h1>
+        <p>Select a topic below to test your understanding at your own pace with instant feedback and scoring.</p>
+    </header>
+
+    <!-- Unit: General Physics -->
+    <div class="unit-section">
+        <h2 class="unit-title">Unit: General Physics</h2>
+        <ul class="topic-list">
+            <li><a href="topic1.html">Topic 1: Physical Quantities, Units and Measurements</a></li>
+        </ul>
+    </div>
+
+    <!-- Unit: Newtonian Mechanics -->
+    <div class="unit-section">
+        <h2 class="unit-title">Unit: Newtonian Mechanics</h2>
+        <ul class="topic-list">
+            <li><a href="topic2.html">Topic 2: Kinematics</a></li>
+            <li><a href="topic3.html">Topic 3: Dynamics</a></li>
+            <li><a href="topic4.html">Topic 4: Mass, Weight & Density</a></li>
+            <li><a href="topic5.html">Topic 5: Turning Effect of Forces</a></li>
+            <li><a href="topic6.html">Topic 6: Deformation</a></li>
+            <li><a href="topic7.html">Topic 7: Pressure</a></li>
+        </ul>
+    </div>
+
+    <!-- Unit: Energy & Thermal Physics -->
+    <div class="unit-section">
+        <h2 class="unit-title">Unit: Energy & Thermal Physics</h2>
+        <ul class="topic-list">
+            <li><a href="topic8.html">Topic 8: Energy Sources & Transfer of Energy</a></li>
+            <li><a href="topic9.html">Topic 9: Transfer of Thermal Energy</a></li>
+            <li><a href="topic10.html">Topic 10: Temperature</a></li>
+            <li><a href="topic11.html">Topic 11: Thermal Properties of Matter</a></li>
+            <li><a href="topic12.html">Topic 12: Kinetic Model of Matter</a></li>
+        </ul>
+    </div>
+
+    <!-- Unit: Waves -->
+    <div class="unit-section">
+        <h2 class="unit-title">Unit: Waves</h2>
+        <ul class="topic-list">
+            <li><a href="topic13.html">Topic 13: General Wave Properties</a></li>
+            <li><a href="topic14.html">Topic 14: Light</a></li>
+            <li><a href="topic15.html">Topic 15: Electromagnetic Spectrum</a></li>
+            <li><a href="topic16.html">Topic 16: Sound</a></li>
+        </ul>
+    </div>
+
+    <!-- Unit: Electricity and Magnetism -->
+    <div class="unit-section">
+        <h2 class="unit-title">Unit: Electricity and Magnetism</h2>
+        <ul class="topic-list">
+            <li><a href="topic17.html">Topic 17: Magnetism & Electromagnetism</a></li>
+            <li><a href="topic18.html">Topic 18: Static Electricity</a></li>
+            <li><a href="topic19.html">Topic 19: Current</a></li>
+            <li><a href="topic20.html">Topic 20: D.C Circuits</a></li>
+            <li><a href="topic21.html">Topic 21: Practical Electricity</a></li>
+            <li><a href="topic22.html">Topic 22: Electromagnetism</a></li>
+            <li><a href="topic23.html">Topic 23: Electromagnetic Induction</a></li>
+        </ul>
+    </div>
+
+    <!-- Unit: Atomic Physics -->
+    <div class="unit-section">
+        <h2 class="unit-title">Unit: Atomic Physics</h2>
+        <ul class="topic-list">
+            <li><a href="topic24.html">Topic 24: Radioactivity</a></li>
+            <li><a href="topic25.html">Topic 25: The Nuclear Atom</a></li>
+        </ul>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 O-Level Physics Revision Hub</p>
+    </footer>
+
 </body>
 </html>
