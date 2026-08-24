@@ -1,209 +1,36 @@
-```html
+HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Physics Assessment - Sample (Questions 1-10)</title>
+    <title>O-Level Physics Practice Hub</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        .question {
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 20px;
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+        h1 { color: #333; }
+        .topic-list { list-style: none; padding: 0; }
+        .topic-list li { margin: 10px 0; }
+        .topic-list a { 
+            display: block; 
+            padding: 12px 20px; 
+            background: #f4f4f4; 
+            border: 1px solid #ddd; 
+            text-decoration: none; 
+            color: #0066cc; 
             border-radius: 5px;
+            font-weight: bold;
         }
-        .options label {
-            display: block;
-            margin: 8px 0;
-            cursor: pointer;
-        }
-        .feedback {
-            margin-top: 10px;
-            padding: 10px;
-            background: #eef;
-            border-left: 4px solid #33f;
-            display: none;
-        }
+        .topic-list a:hover { background: #e2e2e2; }
     </style>
 </head>
 <body>
-
-    <h1>Physical Quantities, Units and Measurements - Assessment Sample</h1>
-    <form id="quizForm">
-
-        <!-- Question 1 -->
-        <div class="question" id="q1">
-            <p><strong>1. The diagram shows arrows representing two vector quantities. Which diagram shows the resultant R of these two vectors?[cite: 1]</strong></p>
-            <div class="options">
-                
-            <div style="margin: 10px 0;">
-            <img src="01.png" alt="Diagram for Question 1" style="max-width: 100%; height: auto; border: 1px solid #ccc;">
-            </div>
-                <label><input type="radio" name="q1" value="A"> A</label>
-                <label><input type="radio" name="q1" value="B"> B</label>
-                <label><input type="radio" name="q1" value="C"> C</label>
-                <label><input type="radio" name="q1" value="D"> D</label>
-            </div>
-            <button type="button" onclick="checkAnswer('q1', 'C', 'The resultant of two vectors is found by placing them tip-to-tail. Option C correctly shows the head-to-tail arrangement where the resultant starts at the tail of the first vector and ends at the tip of the second.')">Submit Answer</button>
-            <div class="feedback" id="q1-feedback"></div>
-        </div>
-
-        <!-- Question 2 -->
-        <div class="question" id="q2">
-            <p><strong>2. Which set of quantities are all vectors?[cite: 1]</strong></p>
-            <div class="options">
-                <label><input type="radio" name="q2" value="A"> A) acceleration, displacement, velocity</label>
-                <label><input type="radio" name="q2" value="B"> B) chemical energy, mass, power</label>
-                <label><input type="radio" name="q2" value="C"> C) extension, force, gravitational potential energy</label>
-                <label><input type="radio" name="q2" value="D"> D) weight, kinetic energy, work</label>
-            </div>
-            <button type="button" onclick="checkAnswer('q2', 'A', 'Acceleration, displacement, and velocity all have both magnitude and direction, making them vector quantities. The other options contain scalars like energy, mass, power, and work.')">Submit Answer</button>
-            <div class="feedback" id="q2-feedback"></div>
-        </div>
-
-        <!-- Question 3 -->
-        <div class="question" id="q3">
-            <p><strong>3. A student determines the circumference of a golf ball. Which instrument gives a reading that is the circumference of the golf ball?[cite: 1]</strong></p>
-            <div class="options">
-                <label><input type="radio" name="q3" value="A"> A) calipers</label>
-                <label><input type="radio" name="q3" value="B"> B) micrometer</label>
-                <label><input type="radio" name="q3" value="C"> C) rule</label>
-                <label><input type="radio" name="q3" value="D"> D) tape</label>
-            </div>
-            <button type="button" onclick="checkAnswer('q3', 'D', 'A measuring tape is flexible and can be wrapped around a curved object like a golf ball to directly measure its circumference. Calipers and micrometers measure diameters or thicknesses, and a straight rule cannot wrap around it accurately.')">Submit Answer</button>
-            <div class="feedback" id="q3-feedback"></div>
-        </div>
-
-        <!-- Question 4 -->
-        <div class="question" id="q4">
-            <p><strong>4. Which quantity is a vector?[cite: 1]</strong></p>
-            <div class="options">
-                <label><input type="radio" name="q4" value="A"> A) energy</label>
-                <label><input type="radio" name="q4" value="B"> B) force</label>
-                <label><input type="radio" name="q4" value="C"> C) speed</label>
-                <label><input type="radio" name="q4" value="D"> D) time</label>
-            </div>
-            <button type="button" onclick="checkAnswer('q4', 'B', 'Force is a vector because it has both a magnitude and a specific direction. Energy, speed, and time are scalar quantities because they only have magnitude.')">Submit Answer</button>
-            <div class="feedback" id="q4-feedback"></div>
-        </div>
-
-        <!-- Question 5 -->
-        <div class="question" id="q5">
-            <p><strong>5. Is mass a scalar or a vector, and is acceleration a scalar or a vector?[cite: 1]</strong></p>
-            <div class="options">
-                <label><input type="radio" name="q5" value="A"> A) scalar, scalar</label>
-                <label><input type="radio" name="q5" value="B"> B) scalar, vector</label>
-                <label><input type="radio" name="q5" value="C"> C) vector, scalar</label>
-                <label><input type="radio" name="q5" value="D"> D) vector, vector</label>
-            </div>
-            <button type="button" onclick="checkAnswer('q5', 'B', 'Mass is a scalar quantity as it only has magnitude, whereas acceleration is a vector quantity because it requires both magnitude and direction.')">Submit Answer</button>
-            <div class="feedback" id="q5-feedback"></div>
-        </div>
-
-        <!-- Question 6 -->
-        <div class="question" id="q6">
-            <p><strong>6. The diameter and the length of a thin wire, approximately 50 cm in length, are measured as precisely as possible. What are the best instruments to use?[cite: 1]</strong></p>
-            <div class="options">
-                <label><input type="radio" name="q6" value="A"> A) micrometer (diameter), rule (length)</label>
-                <label><input type="radio" name="q6" value="B"> B) micrometer (diameter), vernier calipers (length)</label>
-                <label><input type="radio" name="q6" value="C"> C) rule (diameter), tape (length)</label>
-                <label><input type="radio" name="q6" value="D"> D) vernier calipers (diameter), rule (length)</label>
-            </div>
-            <button type="button" onclick="checkAnswer('q6', 'A', 'A micrometer is the most precise instrument for measuring very small diameters (like a thin wire), while a metre rule is appropriate for measuring a length around 50 cm accurately.')">Submit Answer</button>
-            <div class="feedback" id="q6-feedback"></div>
-        </div>
-
-        <!-- Question 7 -->
-        <div class="question" id="q7">
-            <p><strong>7. Newton\'s third law involves two quantities which are equal in size and opposite in direction. What is the unit for these two quantities?[cite: 1]</strong></p>
-            <div class="options">
-                <label><input type="radio" name="q7" value="A"> A) J</label>
-                <label><input type="radio" name="q7" value="B"> B) m/s²</label>
-                <label><input type="radio" name="q7" value="C"> C) N</label>
-                <label><input type="radio" name="q7" value="D"> D) W</label>
-            </div>
-            <button type="button" onclick="checkAnswer('q7', 'C', 'Newton\'s third law deals with forces (action and reaction pairs), which are measured in Newtons (N). Joules measure energy, m/s² measures acceleration, and Watts measure power.')">Submit Answer</button>
-            <div class="feedback" id="q7-feedback"></div>
-        </div>
-
-        <!-- Question 8 -->
-        <div class="question" id="q8">
-            <p><strong>8. Which quantity is a scalar?[cite: 1]</strong></p>
-            <div class="options">
-                <label><input type="radio" name="q8" value="A"> A) acceleration</label>
-                <label><input type="radio" name="q8" value="B"> B) force</label>
-                <label><input type="radio" name="q8" value="C"> C) temperature</label>
-                <label><input type="radio" name="q8" value="D"> D) velocity</label>
-            </div>
-            <button type="button" onclick="checkAnswer('q8', 'C', 'Temperature is a scalar quantity because it has magnitude only (a numerical value with a unit) and no direction. Acceleration, force, and velocity are all vectors.')">Submit Answer</button>
-            <div class="feedback" id="q8-feedback"></div>
-        </div>
-
-        <!-- Question 9 -->
-        <div class="question" id="q9">
-            <p><strong>9. During an experiment to find the density of a stone, the stone is lowered into a measuring cylinder partly filled with water. Which statement is correct?[cite: 1]</strong></p>
-            <div class="options">
-                <label><input type="radio" name="q9" value="A"> A) The difference between the readings gives the density of the stone.</label>
-                <label><input type="radio" name="q9" value="B"> B) The difference between the readings gives the volume of the stone.</label>
-                <label><input type="radio" name="q9" value="C"> C) The final reading gives the density of the stone.</label>
-                <label><input type="radio" name="q9" value="D"> D) The final reading gives the volume of the stone.</label>
-            </div>
-            <button type="button" onclick="checkAnswer('q9', 'B', 'The difference between the initial water level and the final water level represents the volume of water displaced, which equals the volume of the stone (using displacement method). Density requires dividing mass by this volume.')">Submit Answer</button>
-            <div class="feedback" id="q9-feedback"></div>
-        </div>
-
-        <!-- Question 10 -->
-        <div class="question" id="q10">
-            <p><strong>10. The diagram shows a micrometer scale. Which reading is shown?[cite: 1]</strong></p>
-            <div class="options">
-                <label><input type="radio" name="q10" value="A"> A) 5.64 mm</label>
-                <label><input type="radio" name="q10" value="B"> B) 7.14 mm</label>
-                <label><input type="radio" name="q10" value="C"> C) 7.16 mm</label>
-                <label><input type="radio" name="q10" value="D"> D) 7.64 mm</label>
-            </div>
-            <button type="button" onclick="checkAnswer('q10', 'D', 'Looking at the sleeve and thimble: the main scale shows past 7.5 mm, and the thimble scale aligns at 0.14 mm, giving 7.5 + 0.14 = 7.64 mm (as also noted in your written working on the paper!).')">Submit Answer</button>
-            <div class="feedback" id="q10-feedback"></div>
-        </div>
-
-    </form>
-
-    <script>
-        function checkAnswer(questionId, correctAnswer, explanation) {
-            const container = document.getElementById(questionId);
-            const selected = container.querySelector('input[type="radio"]:checked');
-            const feedbackDiv = document.getElementById(questionId + '-feedback');
-            
-            feedbackDiv.style.display = 'block';
-            
-            if (!selected) {
-                feedbackDiv.innerHTML = "<strong>Please select an option first!</strong>";
-                feedbackDiv.style.borderColor = "#ffa500";
-                return;
-            }
-
-            if (selected.value === correctAnswer) {
-                feedbackDiv.innerHTML = "<strong>Correct!</strong> " + explanation;
-                feedbackDiv.style.borderColor = "#28a745";
-                feedbackDiv.style.background = "#e6f9ed";
-            } else {
-                feedbackDiv.innerHTML = "<strong>Incorrect.</strong> The correct answer is " + correctAnswer + ". " + explanation;
-                feedbackDiv.style.borderColor = "#dc3545";
-                feedbackDiv.style.background = "#fde8e8";
-            }
-        }
-    </script>
-
+    <h1>O-Level Physics Assessments</h1>
+    <p>Select a topic below to begin your practice assessment at your own time:</p>
+    
+    <ul class="topic-list">
+        <li><a href="topic1.html">Topic 1: Physical Quantities, Units and Measurements</a></li>
+        <li><a href="topic2.html">Topic 2: Kinematics</a></li>
+        <!-- Add links for your other 20+ topics here as you build them -->
+    </ul>
 </body>
 </html>
-
-```
-
-Would you like me to continue and generate the HTML code for the remaining questions in batches?
