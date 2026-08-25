@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 1: Physical Quantities, Units and Measurements</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-nav {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-nav a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .header-nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .quiz-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .quiz-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        /* Real-time Score Board */
+        .scoreboard {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 65px;
+            z-index: 99;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-val {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .score-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Question Card */
+        .question-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .question-number {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1rem 0;
+        }
+
+        .option-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #ffffff;
+        }
+
+        .option-label:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .option-label input {
+            margin-right: 0.75rem;
+        }
+
+        /* Buttons */
+        .btn-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Feedback Box */
+        .feedback {
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-nav">
+        <a href="index.html">&larr; Back to Main Menu</a>
+        <span style="font-weight: 600; color: var(--text-muted);">Topic 1: Physical Quantities, Units and Measurements</span>
+    </header>
+
+    <div class="container">
+        <h1 class="quiz-title">Physical Quantities, Units and Measurements</h1>
+        <p class="quiz-subtitle">Answer the multiple-choice questions below (58 total). Click submit on each question to check your work instantly.</p>
+
+        <!-- Real-Time Scoreboard -->
+        <div class="scoreboard">
+            <div class="score-item">
+                <div class="score-val" id="attempted-count">0 / 58</div>
+                <div class="score-label">Attempted</div>
+            </div>
+            <div class="score-item">
+                <div class="score-val" id="current-score">0</div>
+                <div class="score-label">Correct Score</div>
+            </div>
+            <div class="score-item">
+                <div class="score-val" id="percentage-score">0%</div>
+                <div class="score-label">Percentage</div>
+            </div>
+        </div>
+
+        <form id="quiz-form">
+
+            <!-- Question 1 -->
+            <div class="question-card" id="q1-card" data-answer="B">
+                <div class="question-number">Question 1 of 58</div>
+                <div class="question-text">The diagram shows arrows representing two vector quantities. Which diagram shows the resultant R of these two vectors?[cite: 1]</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q1" value="A"> A</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q1" value="B"> B</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q1" value="C"> C</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q1" value="D"> D</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(1)">Submit Answer</button>
+                <div class="feedback" id="q1-feedback"></div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-card" id="q2-card" data-answer="A">
+                <div class="question-number">Question 2 of 58</div>
+                <div class="question-text">Which set of quantities are all vectors?[cite: 1]</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q2" value="A"> A) acceleration, displacement, velocity[cite: 1]</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q2" value="B"> B) chemical energy, mass, power[cite: 1]</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q2" value="C"> C) extension, force, gravitational potential energy[cite: 1]</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q2" value="D"> D) weight, kinetic energy, work[cite: 1]</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(2)">Submit Answer</button>
+                <div class="feedback" id="q2-feedback"></div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-card" id="q3-card" data-answer="D">
+                <div class="question-number">Question 3 of 58</div>
+                <div class="question-text">A student determines the circumference of a golf ball. Which instrument gives a reading that is the circumference of the golf ball?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q3" value="A"> A) calipers</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q3" value="B"> B) micrometer</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q3" value="C"> C) rule</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q3" value="D"> D) tape</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(3)">Submit Answer</button>
+                <div class="feedback" id="q3-feedback"></div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-card" id="q4-card" data-answer="B">
+                <div class="question-number">Question 4 of 58</div>
+                <div class="question-text">Which quantity is a vector?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q4" value="A"> A) energy</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q4" value="B"> B) force</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q4" value="C"> C) speed</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q4" value="D"> D) time</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(4)">Submit Answer</button>
+                <div class="feedback" id="q4-feedback"></div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-card" id="q5-card" data-answer="B">
+                <div class="question-number">Question 5 of 58</div>
+                <div class="question-text">Is mass a scalar or a vector, and is acceleration a scalar or a vector?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q5" value="A"> A) scalar, scalar</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q5" value="B"> B) scalar, vector</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q5" value="C"> C) vector, scalar</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q5" value="D"> D) vector, vector</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(5)">Submit Answer</button>
+                <div class="feedback" id="q5-feedback"></div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-card" id="q6-card" data-answer="B">
+                <div class="question-number">Question 6 of 58</div>
+                <div class="question-text">The diameter and the length of a thin wire, approximately 50 cm in length, are measured as precisely as possible. What are the best instruments to use?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q6" value="A"> A) micrometer, rule</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q6" value="B"> B) micrometer, vernier calipers</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q6" value="C"> C) rule, tape</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q6" value="D"> D) vernier calipers, rule</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(6)">Submit Answer</button>
+                <div class="feedback" id="q6-feedback"></div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question-card" id="q7-card" data-answer="C">
+                <div class="question-number">Question 7 of 58</div>
+                <div class="question-text">Newton's third law involves two quantities which are equal in size and opposite in direction. What is the unit for these two quantities?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q7" value="A"> A) J</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q7" value="B"> B) m/s²</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q7" value="C"> C) N</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q7" value="D"> D) W</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(7)">Submit Answer</button>
+                <div class="feedback" id="q7-feedback"></div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question-card" id="q8-card" data-answer="C">
+                <div class="question-number">Question 8 of 58</div>
+                <div class="question-text">Which quantity is a scalar?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q8" value="A"> A) acceleration</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q8" value="B"> B) force</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q8" value="C"> C) temperature</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q8" value="D"> D) velocity</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(8)">Submit Answer</button>
+                <div class="feedback" id="q8-feedback"></div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question-card" id="q9-card" data-answer="B">
+                <div class="question-number">Question 9 of 58</div>
+                <div class="question-text">During an experiment to find the density of a stone, the stone is lowered into a measuring cylinder partly filled with water. Which statement is correct?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q9" value="A"> A) The difference between the readings gives the density of the stone.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q9" value="B"> B) The difference between the readings gives the volume of the stone.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q9" value="C"> C) The final reading gives the density of the stone.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q9" value="D"> D) The final reading gives the volume of the stone.</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(9)">Submit Answer</button>
+                <div class="feedback" id="q9-feedback"></div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question-card" id="q10-card" data-answer="D">
+                <div class="question-number">Question 10 of 58</div>
+                <div class="question-text">The diagram shows a micrometer scale. Which reading is shown?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q10" value="A"> A) 5.64 mm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q10" value="B"> B) 7.14 mm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q10" value="C"> C) 7.16 mm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q10" value="D"> D) 7.64 mm</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(10)">Submit Answer</button>
+                <div class="feedback" id="q10-feedback"></div>
+            </div>
+
+            <!-- Question 11 -->
+            <div class="question-card" id="q11-card" data-answer="A">
+                <div class="question-number">Question 11 of 58</div>
+                <div class="question-text">Which is a scalar quantity?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q11" value="A"> A) mass</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q11" value="B"> B) force</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q11" value="C"> C) velocity</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q11" value="D"> D) weight</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(11)">Submit Answer</button>
+                <div class="feedback" id="q11-feedback"></div>
+            </div>
+
+            <!-- Question 12 -->
+            <div class="question-card" id="q12-card" data-answer="D">
+                <div class="question-number">Question 12 of 58</div>
+                <div class="question-text">A workman measures, as accurately as possible, the length and internal diameter of a straight copper pipe (approx. 600 cm length, approx. 2 cm internal diameter). What is the best combination of instruments?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q12" value="A"> A) ruler, ruler</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q12" value="B"> B) ruler, tape</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q12" value="C"> C) vernier calipers, ruler</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q12" value="D"> D) vernier calipers, tape</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(12)">Submit Answer</button>
+                <div class="feedback" id="q12-feedback"></div>
+            </div>
+
+            <!-- Question 13 -->
+            <div class="question-card" id="q13-card" data-answer="D">
+                <div class="question-number">Question 13 of 58</div>
+                <div class="question-text">The diagram shows a stopwatch. What is the reading on the stopwatch?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q13" value="A"> A) 30.6 s</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q13" value="B"> B) 33.0 s</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q13" value="C"> C) 36.0 s</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q13" value="D"> D) 36.6 s</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(13)">Submit Answer</button>
+                <div class="feedback" id="q13-feedback"></div>
+            </div>
+
+            <!-- Question 14 -->
+            <div class="question-card" id="q14-card" data-answer="C">
+                <div class="question-number">Question 14 of 58</div>
+                <div class="question-text">Each row contains a vector and a scalar. In which row is the size of the vector equal to the size of the scalar?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q14" value="A"> A) displacement of a car / speed of the car</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q14" value="B"> B) velocity of a car / distance travelled by the car</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q14" value="C"> C) velocity of a car / speed of the car</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q14" value="D"> D) weight of a car / mass of the car</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(14)">Submit Answer</button>
+                <div class="feedback" id="q14-feedback"></div>
+            </div>
+
+            <!-- Question 15 -->
+            <div class="question-card" id="q15-card" data-answer="C">
+                <div class="question-number">Question 15 of 58</div>
+                <div class="question-text">What is the size of the resultant of the two forces shown in the diagram (3.0 N and 4.0 N at right angles)?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q15" value="A"> A) 1.0 N</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q15" value="B"> B) 3.5 N</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q15" value="C"> C) 5.0 N</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q15" value="D"> D) 7.0 N</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(15)">Submit Answer</button>
+                <div class="feedback" id="q15-feedback"></div>
+            </div>
+
+            <!-- Question 16 -->
+            <div class="question-card" id="q16-card" data-answer="C">
+                <div class="question-number">Question 16 of 58</div>
+                <div class="question-text">Forces of 25 N and 40 N act on an object in the directions shown. Which arrow shows the direction of the resultant force?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q16" value="A"> A</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q16" value="B"> B</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q16" value="C"> C</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q16" value="D"> D</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(16)">Submit Answer</button>
+                <div class="feedback" id="q16-feedback"></div>
+            </div>
+
+            <!-- Question 17 -->
+            <div class="question-card" id="q17-card" data-answer="B">
+                <div class="question-number">Question 17 of 58</div>
+                <div class="question-text">Which device can be used to measure the thickness of a single sheet of paper?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q17" value="A"> A) a metre rule</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q17" value="B"> B) a micrometer</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q17" value="C"> C) a plastic ruler</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q17" value="D"> D) a measuring tape</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(17)">Submit Answer</button>
+                <div class="feedback" id="q17-feedback"></div>
+            </div>
+
+            <!-- Question 18 -->
+            <div class="question-card" id="q18-card" data-answer="D">
+                <div class="question-number">Question 18 of 58</div>
+                <div class="question-text">In a test, four students linked quantities with units. Which student matched them all correctly?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q18" value="A"> A</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q18" value="B"> B</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q18" value="C"> C</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q18" value="D"> D</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(18)">Submit Answer</button>
+                <div class="feedback" id="q18-feedback"></div>
+            </div>
+
+            <!-- Question 19 -->
+            <div class="question-card" id="q19-card" data-answer="C">
+                <div class="question-number">Question 19 of 58</div>
+                <div class="question-text">Forces of 3 N and 4 N act as shown. Which diagram shows the resultant R of these two forces?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q19" value="A"> A</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q19" value="B"> B</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q19" value="C"> C</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q19" value="D"> D</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(19)">Submit Answer</button>
+                <div class="feedback" id="q19-feedback"></div>
+            </div>
+
+            <!-- Question 20 -->
+            <div class="question-card" id="q20-card" data-answer="A">
+                <div class="question-number">Question 20 of 58</div>
+                <div class="question-text">A micrometer is used to measure the diameter of a uniform wire. What is done to obtain an accurate answer?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q20" value="A"> A) Find the reading and add or subtract the zero error.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q20" value="B"> B) Make the micrometer horizontal.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q20" value="C"> C) Subtract the fixed scale reading from the rotating scale reading.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q20" value="D"> D) Subtract the rotating scale reading from the fixed scale reading.</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(20)">Submit Answer</button>
+                <div class="feedback" id="q20-feedback"></div>
+            </div>
+
+            <!-- Question 21 -->
+            <div class="question-card" id="q21-card" data-answer="A">
+                <div class="question-number">Question 21 of 58</div>
+                <div class="question-text">Before marking the finishing line on a running track, a groundsman measures out its 100m length. Which instrument is appropriate?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q21" value="A"> A) measuring tape</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q21" value="B"> B) metre rule</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q21" value="C"> C) 30 cm ruler</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q21" value="D"> D) micrometer</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(21)">Submit Answer</button>
+                <div class="feedback" id="q21-feedback"></div>
+            </div>
+
+            <!-- Question 22 -->
+            <div class="question-card" id="q22-card" data-answer="B">
+                <div class="question-number">Question 22 of 58</div>
+                <div class="question-text">When there is no wind, engines push an airship due north at 20 m/s. Wind blows from the west at 12 m/s. Which vector diagram correctly shows resultant velocity R?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q22" value="A"> A</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q22" value="B"> B</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q22" value="C"> C</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q22" value="D"> D</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(22)">Submit Answer</button>
+                <div class="feedback" id="q22-feedback"></div>
+            </div>
+
+            <!-- Question 23 -->
+            <div class="question-card" id="q23-card" data-answer="D">
+                <div class="question-number">Question 23 of 58</div>
+                <div class="question-text">A length of copper pipe, several metres long, carries water. Measurements are taken to determine accurately the volume of copper. Which instruments are used?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q23" value="A"> A) calipers and micrometer</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q23" value="B"> B) micrometer and rule</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q23" value="C"> C) rule and tape</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q23" value="D"> D) tape and calipers</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(23)">Submit Answer</button>
+                <div class="feedback" id="q23-feedback"></div>
+            </div>
+
+            <!-- Question 24 -->
+            <div class="question-card" id="q24-card" data-answer="A">
+                <div class="question-number">Question 24 of 58</div>
+                <div class="question-text">A manufacturer measures dimensions of a wooden floor tile (length 0.4m, width 0.08m, thickness 0.005m). Which instruments are used?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q24" value="A"> A) metre rule, micrometer, vernier calipers</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q24" value="B"> B) metre rule, vernier calipers, micrometer</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q24" value="C"> C) micrometer, metre rule, vernier calipers</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q24" value="D"> D) vernier calipers, micrometer, metre rule</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(24)">Submit Answer</button>
+                <div class="feedback" id="q24-feedback"></div>
+            </div>
+
+            <!-- Question 25 -->
+            <div class="question-card" id="q25-card" data-answer="C">
+                <div class="question-number">Question 25 of 58</div>
+                <div class="question-text">Which pair of quantities includes one scalar and one vector?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q25" value="A"> A) mass, time</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q25" value="B"> B) temperature, time</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q25" value="C"> C) temperature, velocity</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q25" value="D"> D) velocity, weight</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(25)">Submit Answer</button>
+                <div class="feedback" id="q25-feedback"></div>
+            </div>
+
+            <!-- Question 26 -->
+            <div class="question-card" id="q26-card" data-answer="B">
+                <div class="question-number">Question 26 of 58</div>
+                <div class="question-text">A reel of copper wire is labelled 'length 30m' and 'diameter 2mm'. Which instruments measure length and diameter accurately?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q26" value="A"> A) rule, calipers</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q26" value="B"> B) rule, micrometer</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q26" value="C"> C) tape, calipers</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q26" value="D"> D) tape, micrometer</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(26)">Submit Answer</button>
+                <div class="feedback" id="q26-feedback"></div>
+            </div>
+
+            <!-- Question 27 -->
+            <div class="question-card" id="q27-card" data-answer="D">
+                <div class="question-number">Question 27 of 58</div>
+                <div class="question-text">Which row correctly shows examples of a vector quantity and a scalar quantity?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q27" value="A"> A) area, force</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q27" value="B"> B) mass, density</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q27" value="C"> C) velocity, acceleration</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q27" value="D"> D) weight, volume</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(27)">Submit Answer</button>
+                <div class="feedback" id="q27-feedback"></div>
+            </div>
+
+            <!-- Question 28 -->
+            <div class="question-card" id="q28-card" data-answer="B">
+                <div class="question-number">Question 28 of 58</div>
+                <div class="question-text">Vernier calipers read to one tenth of a millimetre (0.01 cm). Which reading is given to this precision?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q28" value="A"> A) 3.3 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q28" value="B"> B) 3.31 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q28" value="C"> C) 3.310 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q28" value="D"> D) 3.312 cm</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(28)">Submit Answer</button>
+                <div class="feedback" id="q28-feedback"></div>
+            </div>
+
+            <!-- Question 29 -->
+            <div class="question-card" id="q29-card" data-answer="C">
+                <div class="question-number">Question 29 of 58</div>
+                <div class="question-text">Velocity is given by change in displacement divided by change in time. How many vector quantities appear in this statement?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q29" value="A"> A) 0</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q29" value="B"> B) 1</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q29" value="C"> C) 2</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q29" value="D"> D) 3</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(29)">Submit Answer</button>
+                <div class="feedback" id="q29-feedback"></div>
+            </div>
+
+            <!-- Question 30 -->
+            <div class="question-card" id="q30-card" data-answer="D">
+                <div class="question-number">Question 30 of 58</div>
+                <div class="question-text">Water level in measuring cylinder is 75 cm³. A stone of volume 20 cm³ is lowered. What is the new reading?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q30" value="A"> A) 20 cm³</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q30" value="B"> B) 55 cm³</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q30" value="C"> C) 75 cm³</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q30" value="D"> D) 95 cm³</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(30)">Submit Answer</button>
+                <div class="feedback" id="q30-feedback"></div>
+            </div>
+
+            <!-- Question 31 -->
+            <div class="question-card" id="q31-card" data-answer="D">
+                <div class="question-number">Question 31 of 58</div>
+                <div class="question-text">A plumber measures length (~80 cm) and internal diameter (~2 cm) of a straight copper pipe. Best instruments?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q31" value="A"> A) rule, rule</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q31" value="B"> B) rule, tape</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q31" value="C"> C) vernier calipers, rule</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q31" value="D"> D) vernier calipers, tape</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(31)">Submit Answer</button>
+                <div class="feedback" id="q31-feedback"></div>
+            </div>
+
+            <!-- Question 32 -->
+            <div class="question-card" id="q32-card" data-answer="B">
+                <div class="question-number">Question 32 of 58</div>
+                <div class="question-text">What is the correct unit for the quantity shown?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q32" value="A"> A) electromotive force (e.m.f.) - N</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q32" value="B"> B) latent heat - J</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q32" value="C"> C) pressure - kg/m³</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q32" value="D"> D) weight - kg</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(32)">Submit Answer</button>
+                <div class="feedback" id="q32-feedback"></div>
+            </div>
+
+            <!-- Question 33 -->
+            <div class="question-card" id="q33-card" data-answer="A">
+                <div class="question-number">Question 33 of 58</div>
+                <div class="question-text">The diameter and length of a thin wire (~1m long) are measured accurately. Best instruments?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q33" value="A"> A) micrometer, rule</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q33" value="B"> B) micrometer, vernier calipers</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q33" value="C"> C) rule, tape</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q33" value="D"> D) vernier calipers, rule</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(33)">Submit Answer</button>
+                <div class="feedback" id="q33-feedback"></div>
+            </div>
+
+            <!-- Question 34 -->
+            <div class="question-card" id="q34-card" data-answer="C">
+                <div class="question-number">Question 34 of 58</div>
+                <div class="question-text">A quantity is quoted as having a value of 6.2 ms. In what units is it measured?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q34" value="A"> A) metres</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q34" value="B"> B) metres per second</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q34" value="C"> C) microseconds</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q34" value="D"> D) milliseconds</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(34)">Submit Answer</button>
+                <div class="feedback" id="q34-feedback"></div>
+            </div>
+
+            <!-- Question 35 -->
+            <div class="question-card" id="q35-card" data-answer="B">
+                <div class="question-number">Question 35 of 58</div>
+                <div class="question-text">Which statements describe vector quantities? (1: plane flies due East 600km; 2: runner speed 5m/s; 3: snail crawls 3mm/s straight towards lettuce; 4: tourist travels 500km)</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q35" value="A"> A) 1 and 2</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q35" value="B"> B) 1 and 3</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q35" value="C"> C) 2 and 3</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q35" value="D"> D) 2 and 4</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(35)">Submit Answer</button>
+                <div class="feedback" id="q35-feedback"></div>
+            </div>
+
+            <!-- Question 36 -->
+            <div class="question-card" id="q36-card" data-answer="D">
+                <div class="question-number">Question 36 of 58</div>
+                <div class="question-text">Power is measured in watts. What is the correct symbol for millions of watts?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q36" value="A"> A) mw</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q36" value="B"> B) mW</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q36" value="C"> C) Mw</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q36" value="D"> D) MW</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(36)">Submit Answer</button>
+                <div class="feedback" id="q36-feedback"></div>
+            </div>
+
+            <!-- Question 37 -->
+            <div class="question-card" id="q37-card" data-answer="D">
+                <div class="question-number">Question 37 of 58</div>
+                <div class="question-text">Which list contains only scalar quantities?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q37" value="A"> A) acceleration, displacement, velocity</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q37" value="B"> B) distance, force, speed</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q37" value="C"> C) force, length, time</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q37" value="D"> D) length, mass, speed</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(37)">Submit Answer</button>
+                <div class="feedback" id="q37-feedback"></div>
+            </div>
+
+            <!-- Question 38 -->
+            <div class="question-card" id="q38-card" data-answer="C">
+                <div class="question-number">Question 38 of 58</div>
+                <div class="question-text">Vernier calipers are shown with jaws closed. What is the zero error?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q38" value="A"> A) 0.04 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q38" value="B"> B) 0.05 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q38" value="C"> C) 0.14 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q38" value="D"> D) 0.15 cm</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(38)">Submit Answer</button>
+                <div class="feedback" id="q38-feedback"></div>
+            </div>
+
+            <!-- Question 39 -->
+            <div class="question-card" id="q39-card" data-answer="D">
+                <div class="question-number">Question 39 of 58</div>
+                <div class="question-text">Which instrument is most easily used to measure the internal diameter of a pipe?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q39" value="A"> A) manometer</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q39" value="B"> B) measuring cylinder</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q39" value="C"> C) micrometer</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q39" value="D"> D) vernier calipers</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(39)">Submit Answer</button>
+                <div class="feedback" id="q39-feedback"></div>
+            </div>
+
+            <!-- Question 40 -->
+            <div class="question-card" id="q40-card" data-answer="B">
+                <div class="question-number">Question 40 of 58</div>
+                <div class="question-text">Which statement about scalars and vectors is correct?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q40" value="A"> A) A scalar has direction but no size.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q40" value="B"> B) A scalar has size but no direction.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q40" value="C"> C) A vector has direction but no size.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q40" value="D"> D) A vector has size but no direction.</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(40)">Submit Answer</button>
+                <div class="feedback" id="q40-feedback"></div>
+            </div>
+
+            <!-- Question 41 -->
+            <div class="question-card" id="q41-card" data-answer="B">
+                <div class="question-number">Question 41 of 58</div>
+                <div class="question-text">Vernier calipers read to one tenth of a millimetre. Which reading shows this precision?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q41" value="A"> A) 3.3 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q41" value="B"> B) 3.31 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q41" value="C"> C) 3.310 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q41" value="D"> D) 3.312 cm</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(41)">Submit Answer</button>
+                <div class="feedback" id="q41-feedback"></div>
+            </div>
+
+            <!-- Question 42 -->
+            <div class="question-card" id="q42-card" data-answer="D">
+                <div class="question-number">Question 42 of 58</div>
+                <div class="question-text">Which list contains only scalar quantities?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q42" value="A"> A) acceleration, displacement, mass</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q42" value="B"> B) acceleration, distance, speed</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q42" value="C"> C) displacement, mass, velocity</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q42" value="D"> D) distance, mass, speed</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(42)">Submit Answer</button>
+                <div class="feedback" id="q42-feedback"></div>
+            </div>
+
+            <!-- Question 43 -->
+            <div class="question-card" id="q43-card" data-answer="B">
+                <div class="question-number">Question 43 of 58</div>
+                <div class="question-text">What is the reading on this micrometer?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q43" value="A"> A) 5.43 mm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q43" value="B"> B) 6.63 mm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q43" value="C"> C) 7.30 mm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q43" value="D"> D) 8.13 mm</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(43)">Submit Answer</button>
+                <div class="feedback" id="q43-feedback"></div>
+            </div>
+
+            <!-- Question 44 -->
+            <div class="question-card" id="q44-card" data-answer="A">
+                <div class="question-number">Question 44 of 58</div>
+                <div class="question-text">A manufacturer needs to measure dimensions of a wooden floor tile (length 0.4m, width 8cm, thickness 0.3cm). Which instruments measure each accurately?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q44" value="A"> A) metre rule, micrometer, vernier calipers</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q44" value="B"> B) metre rule, vernier calipers, micrometer</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q44" value="C"> C) micrometer, metre rule, vernier calipers</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q44" value="D"> D) vernier calipers, micrometer, metre rule</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(44)">Submit Answer</button>
+                <div class="feedback" id="q44-feedback"></div>
+            </div>
+
+            <!-- Question 45 -->
+            <div class="question-card" id="q45-card" data-answer="A">
+                <div class="question-number">Question 45 of 58</div>
+                <div class="question-text">The width of a wooden block is measured using vernier calipers. What is the width?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q45" value="A"> A) 3.5 mm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q45" value="B"> B) 5.3 mm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q45" value="C"> C) 8.0 mm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q45" value="D"> D) 8.5 mm</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(45)">Submit Answer</button>
+                <div class="feedback" id="q45-feedback"></div>
+            </div>
+
+            <!-- Question 46 -->
+            <div class="question-card" id="q46-card" data-answer="B">
+                <div class="question-number">Question 46 of 58</div>
+                <div class="question-text">Which of the following correctly lists one scalar and one vector quantity?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q46" value="A"> A) displacement, work</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q46" value="B"> B) energy, force</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q46" value="C"> C) force, acceleration</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q46" value="D"> D) velocity, mass</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(46)">Submit Answer</button>
+                <div class="feedback" id="q46-feedback"></div>
+            </div>
+
+            <!-- Question 47 -->
+            <div class="question-card" id="q47-card" data-answer="C">
+                <div class="question-number">Question 47 of 58</div>
+                <div class="question-text">In an experiment, a ball is rolled down a curved track about half a metre long. Which measuring device should be used to measure the length accurately?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q47" value="A"> A) metre rule</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q47" value="B"> B) micrometer</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q47" value="C"> C) tape measure</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q47" value="D"> D) vernier calipers</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(47)">Submit Answer</button>
+                <div class="feedback" id="q47-feedback"></div>
+            </div>
+
+            <!-- Question 48 -->
+            <div class="question-card" id="q48-card" data-answer="B">
+                <div class="question-number">Question 48 of 58</div>
+                <div class="question-text">The diagram shows a vernier scale. What is the reading on the vernier scale?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q48" value="A"> A) 6.50 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q48" value="B"> B) 6.55 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q48" value="C"> C) 7.00 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q48" value="D"> D) 7.05 cm</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(48)">Submit Answer</button>
+                <div class="feedback" id="q48-feedback"></div>
+            </div>
+
+            <!-- Question 49 -->
+            <div class="question-card" id="q49-card" data-answer="A">
+                <div class="question-number">Question 49 of 58</div>
+                <div class="question-text">The diagram shows one method of measuring the diameter of a beaker. What is the diameter of the beaker?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q49" value="A"> A) 4.5 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q49" value="B"> B) 5.0 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q49" value="C"> C) 5.5 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q49" value="D"> D) 8.0 cm</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(49)">Submit Answer</button>
+                <div class="feedback" id="q49-feedback"></div>
+            </div>
+
+            <!-- Question 50 -->
+            <div class="question-card" id="q50-card" data-answer="C">
+                <div class="question-number">Question 50 of 58</div>
+                <div class="question-text">A student studies equations: power = work / time, force = mass × acceleration, velocity = displacement / time. How many vector quantities are contained?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q50" value="A"> A) 1</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q50" value="B"> B) 2</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q50" value="C"> C) 3</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q50" value="D"> D) 4</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(50)">Submit Answer</button>
+                <div class="feedback" id="q50-feedback"></div>
+            </div>
+
+            <!-- Question 51 -->
+            <div class="question-card" id="q51-card" data-answer="D">
+                <div class="question-number">Question 51 of 58</div>
+                <div class="question-text">Which instrument is used to measure the internal diameter of a pipe with a single measurement?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q51" value="A"> A) manometer</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q51" value="B"> B) measuring cylinder</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q51" value="C"> C) micrometer</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q51" value="D"> D) vernier calipers</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(51)">Submit Answer</button>
+                <div class="feedback" id="q51-feedback"></div>
+            </div>
+
+            <!-- Question 52 -->
+            <div class="question-card" id="q52-card" data-answer="B">
+                <div class="question-number">Question 52 of 58</div>
+                <div class="question-text">Which is the correct statement about force and velocity?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q52" value="A"> A) Force and velocity are both scalars.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q52" value="B"> B) Force and velocity are both vectors.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q52" value="C"> C) Force is a scalar, velocity is a vector.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q52" value="D"> D) Force is a vector, velocity is a scalar.</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(52)">Submit Answer</button>
+                <div class="feedback" id="q52-feedback"></div>
+            </div>
+
+            <!-- Question 53 -->
+            <div class="question-card" id="q53-card" data-answer="D">
+                <div class="question-number">Question 53 of 58</div>
+                <div class="question-text">The diagram shows a vernier V placed against a scale S. What is the vernier reading?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q53" value="A"> A) 2.23</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q53" value="B"> B) 2.26</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q53" value="C"> C) 2.33</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q53" value="D"> D) 2.36</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(53)">Submit Answer</button>
+                <div class="feedback" id="q53-feedback"></div>
+            </div>
+
+            <!-- Question 54 -->
+            <div class="question-card" id="q54-card" data-answer="A">
+                <div class="question-number">Question 54 of 58</div>
+                <div class="question-text">A student determines the volume of a piece of wire (~80 cm long, ~0.2 cm diameter). Which measuring instruments should be used?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q54" value="A"> A) metre rule, micrometer</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q54" value="B"> B) metre rule, vernier callipers</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q54" value="C"> C) micrometer, vernier callipers</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q54" value="D"> D) vernier callipers, micrometer</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(54)">Submit Answer</button>
+                <div class="feedback" id="q54-feedback"></div>
+            </div>
+
+            <!-- Question 55 -->
+            <div class="question-card" id="q55-card" data-answer="B">
+                <div class="question-number">Question 55 of 58</div>
+                <div class="question-text">The diagram shows part of a vernier scale. What is the correct reading?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q55" value="A"> A) 30.5 mm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q55" value="B"> B) 33.5 mm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q55" value="C"> C) 38.0 mm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q55" value="D"> D) 42.5 mm</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(55)">Submit Answer</button>
+                <div class="feedback" id="q55-feedback"></div>
+            </div>
+
+            <!-- Question 56 -->
+            <div class="question-card" id="q56-card" data-answer="B">
+                <div class="question-number">Question 56 of 58</div>
+                <div class="question-text">The diagram shows part of a vernier scale. What is the reading on the vernier scale?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q56" value="A"> A) 6.50 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q56" value="B"> B) 6.55 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q56" value="C"> C) 7.00 cm</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q56" value="D"> D) 7.45 cm</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(56)">Submit Answer</button>
+                <div class="feedback" id="q56-feedback"></div>
+            </div>
+
+            <!-- Question 57 -->
+            <div class="question-card" id="q57-card" data-answer="D">
+                <div class="question-number">Question 57 of 58</div>
+                <div class="question-text">Which of the following groups of physical quantities consists only of scalars?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q57" value="A"> A) acceleration, force, velocity</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q57" value="B"> B) acceleration, mass, speed</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q57" value="C"> C) force, time, velocity</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q57" value="D"> D) mass, speed, time</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(57)">Submit Answer</button>
+                <div class="feedback" id="q57-feedback"></div>
+            </div>
+
+            <!-- Question 58 -->
+            <div class="question-card" id="q58-card" data-answer="A">
+                <div class="question-number">Question 58 of 58</div>
+                <div class="question-text">One oscillation of a swinging pendulum occurs when the bob moves from X to Y and back to X again. Using a stopwatch, which would be the most accurate way to measure the time for one oscillation?</div>
+                <ul class="options-list">
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q58" value="A"> A) Time 20 oscillations and multiply by 20.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q58" value="B"> B) Time 20 oscillations and divide by 20.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q58" value="C"> C) Time one oscillation.</label></li>
+                    <li class="option-item"><label class="option-label"><input type="radio" name="q58" value="D"> D) Time the motion from X to Y, and double it.</label></li>
+                </ul>
+                <button type="button" class="btn-submit" onclick="checkAnswer(58)">Submit Answer</button>
+                <div class="feedback" id="q58-feedback"></div>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        const answeredQuestions = new Set();
+        const totalQuestions = 58;
+        let correctCount = 0;
+
+        function checkAnswer(qNum) {
+            const selectedCard = document.querySelector(`input[name="q${qNum}"]:checked`);
+            const feedbackDiv = document.getElementById(`q${qNum}-feedback`);
+            const cardElement = document.getElementById(`q${qNum}-card`);
+            const correctAnswer = cardElement.getAttribute('data-answer');
+
+            if (!selectedCard) {
+                feedbackDiv.className = "feedback incorrect";
+                feedbackDiv.innerHTML = "Please select an option before submitting!";
+                return;
+            }
+
+            const userChoice = selectedCard.value;
+
+            if (!answeredQuestions.has(qNum)) {
+                answeredQuestions.add(qNum);
+            }
+
+            recalculateScore();
+
+            if (userChoice === correctAnswer) {
+                feedbackDiv.className = "feedback correct";
+                feedbackDiv.innerHTML = `<strong>Correct!</strong> Option ${correctAnswer} is the right answer.`;
+            } else {
+                feedbackDiv.className = "feedback incorrect";
+                feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer is Option ${correctAnswer}.`;
+            }
+        }
+
+        function recalculateScore() {
+            let currentCorrect = 0;
+            let currentAttempted = answeredQuestions.size;
+
+            answeredQuestions.forEach(qNum => {
+                const cardEl = document.getElementById(`q${qNum}-card`);
+                const correctAns = cardEl.getAttribute('data-answer');
+                const radios = document.querySelectorAll(`input[name="q${qNum}"]`);
+                let selectedVal = null;
+                radios.forEach(r => { if (r.checked) selectedVal = r.value; });
+                if (selectedVal === correctAns) {
+                    currentCorrect++;
+                }
+            });
+
+            correctCount = currentCorrect;
+            const percentage = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
+
+            document.getElementById('attempted-count').innerText = `${currentAttempted} / ${totalQuestions}`;
+            document.getElementById('current-score').innerText = correctCount;
+            document.getElementById('percentage-score').innerText = `${percentage}%`;
+        }
+    </script>
+</body>
+</html>
