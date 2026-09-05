@@ -1,0 +1,396 @@
+
+<style>
+  .sim-wrap { padding: 1rem 0; font-family: var(--font-sans); color: var(--color-text-primary); }
+  .section-label { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 6px; }
+  .graph-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; color: var(--color-text-primary); }
+  canvas { display: block; width: 100%; border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; background: var(--color-background-primary); }
+  .controls { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin: 12px 0 16px; }
+  .ctrl-group { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text-secondary); }
+  .ctrl-group input[type=range] { width: 90px; }
+  .ctrl-group span { min-width: 28px; font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .btn-row { display: flex; gap: 8px; margin-bottom: 14px; }
+  button { font-size: 13px; padding: 6px 16px; border-radius: 8px; border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-primary); cursor: pointer; }
+  button:hover { background: var(--color-background-secondary); }
+  button.active { background: var(--color-background-info); color: var(--color-text-info); border-color: var(--color-border-info); }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--color-text-secondary); margin-top: 6px; }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .leg-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .info-box { background: var(--color-background-secondary); border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--color-text-secondary); margin-top: 12px; line-height: 1.6; }
+  .graph-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px; }
+  @media (max-width: 560px) { .graph-row { grid-template-columns: 1fr; } }
+</style>
+
+<div class="sim-wrap">
+  <h2 class="sr-only">Transverse wave simulation with synced displacement-distance and displacement-time graphs</h2>
+
+  <div class="btn-row">
+    <button id="btnPlay" class="active"><i class="ti ti-player-pause" aria-hidden="true"></i> Pause</button>
+    <button id="btnReset"><i class="ti ti-refresh" aria-hidden="true"></i> Reset</button>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <label for="slFreq">Frequency</label>
+      <input type="range" id="slFreq" min="0.3" max="1.5" step="0.1" value="0.7">
+      <span id="outFreq">0.7</span> Hz
+    </div>
+    <div class="ctrl-group">
+      <label for="slAmp">Amplitude</label>
+      <input type="range" id="slAmp" min="20" max="60" step="5" value="40">
+      <span id="outAmp">40</span> cm
+    </div>
+    <div class="ctrl-group">
+      <label for="slPx">Track particle</label>
+      <input type="range" id="slPx" min="0" max="9" step="1" value="3">
+      <span id="outPx">P4</span>
+    </div>
+  </div>
+
+  <div style="margin-bottom: 8px;">
+    <canvas id="waveCanvas" height="150"></canvas>
+    <div class="legend" style="margin-top:6px;">
+      <span><span class="leg-dot" style="background:#378ADD;"></span>Wave (snapshot)</span>
+      <span><span class="leg-dot" style="background:#E24B4A;"></span>Tracked particle</span>
+      <span><span class="leg-dot" style="background:#888780;"></span>Other particles</span>
+      <span><span>↕ transverse vibration direction</span></span>
+    </div>
+  </div>
+
+  <div class="graph-row">
+    <div>
+      <p class="graph-title">Displacement–distance graph</p>
+      <p class="section-label">All particles, this instant</p>
+      <canvas id="ddCanvas" height="170"></canvas>
+    </div>
+    <div>
+      <p class="graph-title">Displacement–time graph</p>
+      <p class="section-label">Tracked particle over time</p>
+      <canvas id="dtCanvas" height="170"></canvas>
+    </div>
+  </div>
+
+  <div class="info-box" id="infoBox"></div>
+</div>
+
+<script>
+const waveC = document.getElementById('waveCanvas');
+const ddC   = document.getElementById('ddCanvas');
+const dtC   = document.getElementById('dtCanvas');
+const wCtx  = waveC.getContext('2d');
+const ddCtx = ddC.getContext('2d');
+const dtCtx = dtC.getContext('2d');
+
+const NUM_P = 10;
+let freq = 0.7, amp = 40, trackedIdx = 3;
+let simT = 0, running = true;
+const dtHistory = [];
+const MAX_HIST = 600;
+
+// All wave physics uses a normalised position x in [0, 1].
+// Wavelength is expressed as a fraction of the rope length.
+// This means the rope always shows ~2 full wavelengths regardless of canvas width.
+const WAVE_SPEED = 2.0;   // wavelengths per second (unitless, visual)
+
+function particleNormX(i) {
+  return i / (NUM_P - 1);  // 0..1
+}
+
+function displacement(normX, time) {
+  const k = 2 * Math.PI * 2;          // 2 full cycles across the rope
+  const omega = 2 * Math.PI * freq;
+  return amp * Math.sin(k * normX - omega * time);
+}
+
+function getColors() {
+  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return {
+    wave:    '#378ADD',
+    other:   '#888780',
+    tracked: '#E24B4A',
+    dtLine:  '#0F6E56',
+    axis:    dark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.20)',
+    grid:    dark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)',
+    text:    dark ? 'rgba(255,255,255,0.60)' : 'rgba(0,0,0,0.50)',
+  };
+}
+
+function setCanvasDPI(c) {
+  const rect = c.getBoundingClientRect();
+  if (rect.width === 0) return;
+  const dpr = window.devicePixelRatio || 1;
+  const h = parseInt(c.getAttribute('height'));
+  c.width  = rect.width * dpr;
+  c.height = h * dpr;
+  c.getContext('2d').scale(dpr, dpr);
+}
+function cW(c) { return c.getBoundingClientRect().width || 400; }
+function cH(c) { return parseInt(c.getAttribute('height')); }
+
+// ─── Wave rope ─────────────────────────────────────────────────────────────
+function drawWave() {
+  const W = cW(waveC), H = cH(waveC);
+  const ctx = wCtx;
+  const cols = getColors();
+  ctx.clearRect(0, 0, W, H);
+
+  const ML = 40, MR = 16;          // left/right margins
+  const gW = W - ML - MR;
+  const midY = H / 2;
+  const scaleY = (H * 0.35) / amp; // pixels per cm
+
+  // Equilibrium line
+  ctx.strokeStyle = cols.axis;
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(ML, midY); ctx.lineTo(ML + gW, midY); ctx.stroke();
+
+  // Wave curve — using normX so it matches the d–d graph exactly
+  ctx.strokeStyle = cols.wave;
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  for (let px = 0; px <= gW; px++) {
+    const normX = px / gW;
+    const y = midY - displacement(normX, simT) * scaleY;
+    if (px === 0) ctx.moveTo(ML + px, y); else ctx.lineTo(ML + px, y);
+  }
+  ctx.stroke();
+
+  // Particles
+  for (let i = 0; i < NUM_P; i++) {
+    const normX = particleNormX(i);
+    const px = ML + normX * gW;
+    const d  = displacement(normX, simT);
+    const py = midY - d * scaleY;
+    const tracked = (i === trackedIdx);
+
+    if (tracked) {
+      // dashed vertical line from equilibrium to particle
+      ctx.strokeStyle = cols.tracked;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(px, midY); ctx.lineTo(px, py); ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = cols.tracked;
+      ctx.beginPath(); ctx.arc(px, py, 9, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 9px sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('P' + (i + 1), px, py);
+
+      // label above
+      ctx.fillStyle = cols.tracked;
+      ctx.font = '11px sans-serif';
+      ctx.textBaseline = 'bottom'; ctx.textAlign = 'center';
+      ctx.fillText('P' + (i + 1) + ' ← tracked', px, midY - amp * scaleY - 6);
+    } else {
+      ctx.fillStyle = cols.other;
+      ctx.beginPath(); ctx.arc(px, py, 4.5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = cols.text;
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.fillText('P' + (i + 1), px, midY + amp * scaleY + 4);
+    }
+  }
+
+  ctx.fillStyle = cols.text;
+  ctx.font = '11px sans-serif';
+  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+  ctx.fillText('Wave direction →', W - MR, H - 2);
+}
+
+// ─── Displacement–Distance graph ──────────────────────────────────────────
+function drawDD() {
+  const W = cW(ddC), H = cH(ddC);
+  const ctx = ddCtx;
+  const cols = getColors();
+  ctx.clearRect(0, 0, W, H);
+
+  const ML = 38, MR = 10, MT = 16, MB = 28;
+  const gW = W - ML - MR, gH = H - MT - MB;
+  const midY = MT + gH / 2;
+  const scaleY = (gH * 0.42) / amp;
+
+  // grid & axes
+  ctx.strokeStyle = cols.grid; ctx.lineWidth = 0.5;
+  [-1, 0, 1].forEach(g => {
+    const yg = midY - g * amp * scaleY;
+    ctx.beginPath(); ctx.moveTo(ML, yg); ctx.lineTo(ML + gW, yg); ctx.stroke();
+  });
+  ctx.strokeStyle = cols.axis; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(ML, midY); ctx.lineTo(ML + gW, midY); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ML, MT); ctx.lineTo(ML, MT + gH); ctx.stroke();
+
+  // wave curve — normX from 0→1 maps to the graph width
+  ctx.strokeStyle = cols.wave; ctx.lineWidth = 2;
+  ctx.beginPath();
+  for (let px = 0; px <= gW; px++) {
+    const normX = px / gW;
+    const d = displacement(normX, simT);
+    const y = midY - d * scaleY;
+    if (px === 0) ctx.moveTo(ML + px, y); else ctx.lineTo(ML + px, y);
+  }
+  ctx.stroke();
+
+  // tracked particle dot on d–d graph
+  const tNorm = particleNormX(trackedIdx);
+  const tPx   = ML + tNorm * gW;
+  const tD    = displacement(tNorm, simT);
+  const tPy   = midY - tD * scaleY;
+
+  ctx.strokeStyle = cols.tracked; ctx.lineWidth = 1;
+  ctx.setLineDash([3, 3]);
+  ctx.beginPath(); ctx.moveTo(tPx, midY); ctx.lineTo(tPx, tPy); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = cols.tracked;
+  ctx.beginPath(); ctx.arc(tPx, tPy, 7, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 8px sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('P' + (trackedIdx + 1), tPx, tPy);
+
+  // labels
+  ctx.fillStyle = cols.text; ctx.font = '10px sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  ctx.fillText('distance along rope →', ML + gW / 2, MT + gH + 5);
+  ctx.save();
+  ctx.translate(11, midY); ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('displacement / cm', 0, 0);
+  ctx.restore();
+  ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  ctx.fillText('+A', ML - 3, midY - amp * scaleY);
+  ctx.fillText('0',  ML - 3, midY);
+  ctx.fillText('−A', ML - 3, midY + amp * scaleY);
+}
+
+// ─── Displacement–Time graph ───────────────────────────────────────────────
+function drawDT() {
+  const W = cW(dtC), H = cH(dtC);
+  const ctx = dtCtx;
+  const cols = getColors();
+  ctx.clearRect(0, 0, W, H);
+
+  const ML = 38, MR = 10, MT = 16, MB = 28;
+  const gW = W - ML - MR, gH = H - MT - MB;
+  const midY = MT + gH / 2;
+  const scaleY = (gH * 0.42) / amp;
+  const period = 1 / freq;
+  const showSpan = 3 * period;
+
+  // grid & axes
+  ctx.strokeStyle = cols.grid; ctx.lineWidth = 0.5;
+  [-1, 0, 1].forEach(g => {
+    const yg = midY - g * amp * scaleY;
+    ctx.beginPath(); ctx.moveTo(ML, yg); ctx.lineTo(ML + gW, yg); ctx.stroke();
+  });
+  for (let p = 0; p <= 3; p++) {
+    const xg = ML + (p / 3) * gW;
+    ctx.beginPath(); ctx.moveTo(xg, MT); ctx.lineTo(xg, MT + gH); ctx.stroke();
+  }
+  ctx.strokeStyle = cols.axis; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(ML, midY); ctx.lineTo(ML + gW, midY); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ML, MT); ctx.lineTo(ML, MT + gH); ctx.stroke();
+
+  // history trail
+  if (dtHistory.length > 1) {
+    ctx.strokeStyle = cols.dtLine; ctx.lineWidth = 2;
+    ctx.beginPath();
+    let started = false;
+    for (let i = 0; i < dtHistory.length; i++) {
+      const age = simT - dtHistory[i].t;
+      if (age > showSpan) continue;
+      const xp = ML + gW - (age / showSpan) * gW;
+      const yp = midY - dtHistory[i].d * scaleY;
+      if (!started) { ctx.moveTo(xp, yp); started = true; } else ctx.lineTo(xp, yp);
+    }
+    ctx.stroke();
+  }
+
+  // current dot
+  const nowD = displacement(particleNormX(trackedIdx), simT);
+  const nowY = midY - nowD * scaleY;
+  ctx.fillStyle = cols.tracked;
+  ctx.beginPath(); ctx.arc(ML + gW, nowY, 7, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 8px sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('P' + (trackedIdx + 1), ML + gW, nowY);
+
+  // labels
+  ctx.fillStyle = cols.text; ctx.font = '10px sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  ctx.fillText('time  (← past    now →)', ML + gW / 2, MT + gH + 5);
+  ctx.save();
+  ctx.translate(11, midY); ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('displacement / cm', 0, 0);
+  ctx.restore();
+  ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  ctx.fillText('+A', ML - 3, midY - amp * scaleY);
+  ctx.fillText('0',  ML - 3, midY);
+  ctx.fillText('−A', ML - 3, midY + amp * scaleY);
+  for (let p = 1; p <= 3; p++) {
+    const xg = ML + ((3 - p) / 3) * gW;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.fillText(p + 'T', xg, MT + gH + 5);
+  }
+}
+
+function updateInfo() {
+  const d = displacement(particleNormX(trackedIdx), simT);
+  const T = (1 / freq).toFixed(2);
+  document.getElementById('infoBox').innerHTML =
+    '<strong>P' + (trackedIdx + 1) + ' displacement now: ' + d.toFixed(1) + ' cm</strong> &nbsp;|&nbsp; ' +
+    'f = ' + freq.toFixed(1) + ' Hz &nbsp;|&nbsp; T = ' + T + ' s &nbsp;|&nbsp; A = ' + amp + ' cm<br>' +
+    '<span style="font-size:11px;">The red dot appears at the <em>same height</em> on the rope, the d–distance graph, and the d–time graph. ' +
+    'The d–distance graph is a "photograph" of the whole wave. The d–time graph is the "life story" of P' + (trackedIdx+1) + ' only.</span>';
+}
+
+let lastTS = null;
+function loop(ts) {
+  if (!lastTS) lastTS = ts;
+  const dt = Math.min((ts - lastTS) / 1000, 0.05);
+  lastTS = ts;
+  if (running) {
+    simT += dt;
+    const d = displacement(particleNormX(trackedIdx), simT);
+    dtHistory.push({ t: simT, d });
+    while (dtHistory.length > MAX_HIST) dtHistory.shift();
+  }
+  drawWave(); drawDD(); drawDT(); updateInfo();
+  requestAnimationFrame(loop);
+}
+
+function resizeAll() {
+  [waveC, ddC, dtC].forEach(setCanvasDPI);
+}
+
+document.getElementById('btnPlay').addEventListener('click', function () {
+  running = !running;
+  lastTS = null;
+  this.innerHTML = running
+    ? '<i class="ti ti-player-pause" aria-hidden="true"></i> Pause'
+    : '<i class="ti ti-player-play" aria-hidden="true"></i> Play';
+  this.classList.toggle('active', running);
+});
+document.getElementById('btnReset').addEventListener('click', () => {
+  simT = 0; dtHistory.length = 0; lastTS = null;
+});
+document.getElementById('slFreq').addEventListener('input', function () {
+  freq = parseFloat(this.value);
+  document.getElementById('outFreq').textContent = freq.toFixed(1);
+  dtHistory.length = 0;
+});
+document.getElementById('slAmp').addEventListener('input', function () {
+  amp = parseInt(this.value);
+  document.getElementById('outAmp').textContent = amp;
+});
+document.getElementById('slPx').addEventListener('input', function () {
+  trackedIdx = parseInt(this.value);
+  document.getElementById('outPx').textContent = 'P' + (trackedIdx + 1);
+  dtHistory.length = 0;
+});
+window.addEventListener('resize', () => { resizeAll(); });
+
+setTimeout(() => { resizeAll(); requestAnimationFrame(loop); }, 120);
+</script>
